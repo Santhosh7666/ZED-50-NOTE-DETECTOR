@@ -15,3 +15,4 @@ if __name__ == "__main__":
         simplify=args.simplify,
         dynamic=args.dynamic,
     )
+

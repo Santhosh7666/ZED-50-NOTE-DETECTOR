@@ -135,3 +135,4 @@ def scale_coords(
     scaled[:, [1, 3]] = np.clip(scaled[:, [1, 3]], 0, orig_shape[0])
 
     return scaled
+

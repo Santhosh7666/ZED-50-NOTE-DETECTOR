@@ -173,3 +173,4 @@ class BanknoteAugmentor:
         img, aug_boxes = self.transform_geometry(img, boxes)
 
         return img, aug_boxes
+

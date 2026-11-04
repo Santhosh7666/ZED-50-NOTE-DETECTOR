@@ -240,3 +240,4 @@ class Visualizer:
         )
 
         return frame
+

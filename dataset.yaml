@@ -8,3 +8,4 @@ test: dataset/images/test   # Test images
 nc: 1 # Number of target classes
 names:
   0: '₹50' # Target: New Light Blue-Green ₹50 Indian Banknote (Front & Back)
+

@@ -211,3 +211,4 @@ class DetectionMetrics:
             "latency_p95_ms": p95_lat,
             "fps": fps,
         }
+

@@ -126,3 +126,4 @@ class OpenCVNetDetector:
         preds = self.net.forward()
         inference_time_ms = (time.perf_counter() - t0) * 1000.0
         return preds, inference_time_ms
+

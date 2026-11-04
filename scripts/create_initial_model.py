@@ -101,3 +101,4 @@ def generate_pipeline_onnx(output_path: str = "models/model.onnx"):
 if __name__ == "__main__":
     out_p = sys.argv[1] if len(sys.argv) > 1 else "models/model.onnx"
     generate_pipeline_onnx(out_p)
+
