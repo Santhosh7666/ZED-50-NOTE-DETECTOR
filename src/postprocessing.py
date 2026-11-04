@@ -7,7 +7,6 @@ temporal multi-frame confirmation to prevent false triggers and display flicker.
 
 from typing import List, Tuple, Dict, Optional
 import numpy as np
-import cv2
 
 
 class Detection:
@@ -160,19 +159,35 @@ def decode_yolo_onnx(
     if not boxes_xywh:
         return []
 
-    # OpenCV Non-Maximum Suppression
-    indices = cv2.dnn.NMSBoxes(
-        bboxes=boxes_xywh,
-        scores=confs,
-        score_threshold=conf_threshold,
-        nms_threshold=iou_threshold,
-    )
+    # Non-Maximum Suppression (OpenCV DNN accelerated, with pure Python fallback)
+    try:
+        import cv2
+        indices = cv2.dnn.NMSBoxes(
+            bboxes=boxes_xywh,
+            scores=confs,
+            score_threshold=conf_threshold,
+            nms_threshold=iou_threshold,
+        )
+        if len(indices) > 0:
+            indices = np.array(indices).flatten().tolist()
+        else:
+            indices = []
+    except ImportError:
+        # Vectorized pure Python IoU NMS
+        order = np.argsort(-np.array(confs))
+        indices = []
+        while len(order) > 0:
+            i = order[0]
+            indices.append(i)
+            if len(order) == 1:
+                break
+            ious = np.array([calculate_iou(boxes_xyxy[i], boxes_xyxy[j]) for j in order[1:]])
+            inds = np.where(ious <= iou_threshold)[0]
+            order = order[inds + 1]
 
     detections = []
-    if len(indices) > 0:
-        indices = np.array(indices).flatten()
-        for idx in indices:
-            detections.append(Detection(bbox=boxes_xyxy[idx], confidence=confs[idx], class_id=0))
+    for idx in indices:
+        detections.append(Detection(bbox=boxes_xyxy[idx], confidence=confs[idx], class_id=0))
 
     return detections
 
@@ -282,3 +297,4 @@ class TemporalStabilityTracker:
                 )
 
         return confirmed_detections
+
