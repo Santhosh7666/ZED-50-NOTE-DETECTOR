@@ -1,0 +1,10 @@
+# YOLO Dataset Configuration for ZED Digital FEDS - ₹50 Indian Banknote Detector
+path: . # Dataset root directory relative to execution path
+train: dataset/images/train # Training images
+val: dataset/images/val     # Validation images
+test: dataset/images/test   # Test images
+
+# Classes
+nc: 1 # Number of target classes
+names:
+  0: '₹50' # Target: New Light Blue-Green ₹50 Indian Banknote (Front & Back)
